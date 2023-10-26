@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from ONIET2023app.views import analisis_view
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('data/', analisis_view)
 ]
