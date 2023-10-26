@@ -1,12 +1,14 @@
-from django.shortcuts import render, HttpResponse
+from ONIET2023app.utils import to_json
 from django.db import connection
 from django.http import JsonResponse
+from django.shortcuts import render
+from rest_framework.decorators import api_view
+
 
 # Create your views here.
-def home(request):
-    return render(request,"index.html")
 
-def analisis_view(request):
+@api_view(['GET'])
+def analisis(request):
     with connection.cursor() as cursor:
         cursor.execute('select Empresa, '
                        'SUM(ProduccionTotal), '
@@ -18,4 +20,11 @@ def analisis_view(request):
                        'group by Empresa')
         row = cursor.fetchall()
         print(row)
-    return JsonResponse(row, safe=False)
+    return JsonResponse(to_json(
+        ["Empresa", "Producción Total", "Cantidad Piezas Ok", "Cantidad Piezas Error", "%Piezas Ok",
+         "%Piezas Error"],
+        row), safe=False)
+
+
+def home(request):
+    return render(request, "index.html")
