@@ -1,13 +1,16 @@
+<html>
 <head>
-    <link rel="stylesheet" href="./styles/index.css" >
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="./styles/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://unpkg.com/ag-grid-community@27.2.0/styles/ag-grid.css">
     <link rel="stylesheet" href="https://unpkg.com/ag-grid-community@27.2.0/styles/ag-theme-alpine.css">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand padding_left"  style="padding-left: 10px;">ONIET 2023</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <a class="navbar-brand padding_left" style="padding-left: 10px;">ONIET 2023</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav mr-auto">
@@ -22,7 +25,7 @@
               </li>
           </ul>
         </div>
-      </nav>
+    </nav>
 </head>
 <body>
 
@@ -33,7 +36,21 @@
     <div style="padding-left: 22%;">
         <div id="myGrid" class="ag-theme-alpine" style="width: 70%; height: 400px;"></div>
     </div>
-   
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Empresa</th>
+        <th>Producción Total</th>
+        <th>Cantidad Piezas Ok</th>
+        <th>Cantidad Piezas Error</th>
+        <th>% Piezas Ok</th>
+        <th>% Piezas Error</th>
+    </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+</table>
 
 <footer class="text-center text-lg-start bg-white text-muted">
 
@@ -41,99 +58,77 @@
 
 
     </section>
-     
+
     <div class="text-center p-4" style="background-color:rgb(195, 195, 195);">
-      <a>Hecho por: Estudiantes del </a> 
+      <a>Hecho por: Estudiantes del </a>
       <a class="text-reset fw-bold" href="https://www.itsv.edu.ar/itsv/index.php" target="_blank">Instituto Tecnico Salesiano Villada</a>
     </div>
-  </footer>
-  <script>
-    const filterParams = {
-        comparator: (filterLocalDateAtMidnight, cellValue) => {
-            var dateAsString = cellValue;
-            if (dateAsString == null) return -1;
-            var dateParts = dateAsString.split('/');
-            var cellDate = new Date(
-                Number(dateParts[2]),
-                Number(dateParts[1]) - 1,
-                Number(dateParts[0])
-            );
-
-            if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
-                return 0;
-            }
-
-            if (cellDate < filterLocalDateAtMidnight) {
-                return -1;
-            }
-
-            if (cellDate > filterLocalDateAtMidnight) {
-                return 1;
-            }
-            return 0;
+</footer>
+<script>
+    var jsonData = [
+        {
+            "Empresa": "Empresa 1",
+            "Producción_Total": 4198,
+            "Cantidad_Piezas_Ok": 3410,
+            "Cantidad_Piezas_Error": 788,
+            "p_Piezas_Ok": 81.23,
+            "p_Piezas_Error": 18.77
         },
-    };
-
-    const columnDefs = [
-        { field: 'Empresa' },
-        { field: 'Produccion total' },
-        { field: 'Cantidad de piezas Ok'},
-        { field: 'Cantidad de piezas Error' },
-        { field: '%Piezas Ok', sort: 'desc' },
-        { field: '%Piezas Error'},
-
+        {
+            "Empresa": "Empresa 2",
+            "Producción_Total": 3985,
+            "Cantidad_Piezas_Ok": 3314,
+            "Cantidad_Piezas_Error": 671,
+            "p_Piezas_Ok": 83.16,
+            "p_Piezas_Error": 16.84
+        },
+        {
+            "Empresa": "Empresa 3",
+            "Producción_Total": 3659,
+            "Cantidad_Piezas_Ok": 3107,
+            "Cantidad_Piezas_Error": 552,
+            "p_Piezas_Ok": 84.91,
+            "p_Piezas_Error": 15.09
+        },
+        {
+            "Empresa": "Empresa 4",
+            "Producción_Total": 4277,
+            "Cantidad_Piezas_Ok": 3831,
+            "Cantidad_Piezas_Error": 446,
+            "p_Piezas_Ok": 89.57,
+            "p_Piezas_Error": 10.43
+        },
+        {
+            "Empresa": "Empresa 5",
+            "Producción_Total": 4636,
+            "Cantidad_Piezas_Ok": 4119,
+            "Cantidad_Piezas_Error": 517,
+            "p_Piezas_Ok": 88.85,
+            "p_Piezas_Error": 11.15
+        }
     ];
 
-    function dateComparator(date1, date2) {
-        const date1Number = monthToComparableNumber(date1);
-        const date2Number = monthToComparableNumber(date2);
+    jsonData.sort(function (a, b) {
+        return b.Cantidad_Piezas_Ok - a.Cantidad_Piezas_Ok;
+    });
 
-        if (date1Number === null && date2Number === null) {
-            return 0;
-        }
-        if (date1Number === null) {
-            return -1;
-        }
-        if (date2Number === null) {
-            return 1;
-        }
+    var tableBody = document.getElementById("table-body");
 
-        return date1Number - date2Number;
-    }
-
-    function monthToComparableNumber(date) {
-        if (date === undefined || date === null || date.length !== 10) {
-            return null;
-        }
-
-        const yearNumber = Number.parseInt(date.substring(6, 10));
-        const monthNumber = Number.parseInt(date.substring(3, 5));
-        const dayNumber = Number.parseInt(date.substring(0, 2));
-
-        return yearNumber * 10000 + monthNumber * 100 + dayNumber;
-    }
-
-    const gridOptions = {
-        columnDefs: columnDefs,
-        defaultColDef: {
-            width: 170,
-            sortable: true,
-            filter: 'agTextColumnFilter',
-            menuTabs: ['filterMenuTab'],
-        },
-    };
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const gridDiv = document.querySelector('#myGrid');
-        new agGrid.Grid(gridDiv, gridOptions);
-
-        fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
-            .then((response) => response.json())
-            .then((data) => gridOptions.api.setRowData(data));
+    jsonData.forEach(function (item) {
+        var row = document.createElement("tr");
+        row.innerHTML = `
+                <td>${item.Empresa}</td>
+                <td>${item.Producción_Total}</td>
+                <td>${item.Cantidad_Piezas_Ok}</td>
+                <td>${item.Cantidad_Piezas_Error}</td>
+                <td>${item.p_Piezas_Ok}%</td>
+                <td>${item.p_Piezas_Error}%</td>
+            `;
+        tableBody.appendChild(row);
     });
 </script>
 
 <script src="https://unpkg.com/ag-grid-community@27.2.0/dist/ag-grid-community.min.js"></script>
 </body>
 
- 
+</html>
