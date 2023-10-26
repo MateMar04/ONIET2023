@@ -29,14 +29,20 @@
 </head>
 <body>
 
-<div class="content" style="padding-left: 37%; align-items: center; padding-top: 15px">
-    <h1>Trabajo Práctico - ONIET</h1>
-    <p style="padding-left:6%;">Resolucion de la situación problemática</p>
-</div>
-<div>
-    <div id="myGrid" class="ag-theme-alpine" style="width: 100%; height: 400px;"></div>
-</div>
-
+<table border="1">
+    <thead>
+    <tr>
+        <th>Empresa</th>
+        <th>Producción Total</th>
+        <th>Cantidad Piezas Ok</th>
+        <th>Cantidad Piezas Error</th>
+        <th>% Piezas Ok</th>
+        <th>% Piezas Error</th>
+    </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+</table>
 
 <footer class="text-center text-lg-start bg-white text-muted">
 
@@ -79,36 +85,70 @@
         <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
     </div>
 </footer>
-
 <script>
-    const apiUrl = 'http://localhost:8000/data';
+    // Your JSON data
+    var jsonData = [
+        {
+            "Empresa": "Empresa 1",
+            "Producción_Total": 4198,
+            "Cantidad_Piezas_Ok": 3410,
+            "Cantidad_Piezas_Error": 788,
+            "p_Piezas_Ok": 81.23,
+            "p_Piezas_Error": 18.77
+        },
+        {
+            "Empresa": "Empresa 2",
+            "Producción_Total": 3985,
+            "Cantidad_Piezas_Ok": 3314,
+            "Cantidad_Piezas_Error": 671,
+            "p_Piezas_Ok": 83.16,
+            "p_Piezas_Error": 16.84
+        },
+        {
+            "Empresa": "Empresa 3",
+            "Producción_Total": 3659,
+            "Cantidad_Piezas_Ok": 3107,
+            "Cantidad_Piezas_Error": 552,
+            "p_Piezas_Ok": 84.91,
+            "p_Piezas_Error": 15.09
+        },
+        {
+            "Empresa": "Empresa 4",
+            "Producción_Total": 4277,
+            "Cantidad_Piezas_Ok": 3831,
+            "Cantidad_Piezas_Error": 446,
+            "p_Piezas_Ok": 89.57,
+            "p_Piezas_Error": 10.43
+        },
+        {
+            "Empresa": "Empresa 5",
+            "Producción_Total": 4636,
+            "Cantidad_Piezas_Ok": 4119,
+            "Cantidad_Piezas_Error": 517,
+            "p_Piezas_Ok": 88.85,
+            "p_Piezas_Error": 11.15
+        }
+    ];
 
-    // Realiza la solicitud a la API utilizando fetch
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la solicitud a la API');
-            }
-            return response.json(); // Convierte la respuesta a JSON
-        })
-        .then(data => {
-            // Aquí puedes transformar los datos en HTML
-            const html = `<div>
-      <p>${data.Empresa}</p>
-      <p>${data.Producción_Total}</p>
-      <p>${data.Cantidad_Piezas_Ok}</p>
-      <p>${data.Cantidad_Piezas_Error}</p>
-      <p>${data.p_Piezas_Ok}</p>
-        <p>${data.p_Piezas_Error}</p>
-    </div>`;
-            console.log(data)
+    // Sort the data by "Cantidad Piezas Ok" in descending order
+    jsonData.sort(function (a, b) {
+        return b.Cantidad_Piezas_Ok - a.Cantidad_Piezas_Ok;
+    });
 
-            // Agregar el HTML al documento
-            document.body.innerHTML = html;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    var tableBody = document.getElementById("table-body");
+
+    jsonData.forEach(function (item) {
+        var row = document.createElement("tr");
+        row.innerHTML = `
+                <td>${item.Empresa}</td>
+                <td>${item.Producción_Total}</td>
+                <td>${item.Cantidad_Piezas_Ok}</td>
+                <td>${item.Cantidad_Piezas_Error}</td>
+                <td>${item.p_Piezas_Ok}%</td>
+                <td>${item.p_Piezas_Error}%</td>
+            `;
+        tableBody.appendChild(row);
+    });
 </script>
 
 <script src="https://unpkg.com/ag-grid-community@27.2.0/dist/ag-grid-community.min.js"></script>
