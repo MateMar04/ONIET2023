@@ -221,3 +221,5 @@ def generate_insert_statements(json_data):
 
 print(generate_insert_statements(data))
 
+def to_json(keys, values):
+    return [dict(zip(keys, item)) for item in values]
