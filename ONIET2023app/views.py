@@ -1,6 +1,10 @@
+from django.shortcuts import render, HttpResponse
 from django.db import connection
 from django.http import JsonResponse
 
+# Create your views here.
+def home(request):
+    return render(request,"index.html")
 
 def analisis_view(request):
     with connection.cursor() as cursor:
