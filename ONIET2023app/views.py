@@ -21,8 +21,8 @@ def analisis(request):
         row = cursor.fetchall()
         print(row)
     return JsonResponse(to_json(
-        ["Empresa", "Producción Total", "Cantidad Piezas Ok", "Cantidad Piezas Error", "%Piezas Ok",
-         "%Piezas Error"],
+        ["Empresa", "Producción_Total", "Cantidad_Piezas_Ok", "Cantidad_Piezas_Error", "p_Piezas_Ok",
+         "p_Piezas_Error"],
         row), safe=False)
 
 
